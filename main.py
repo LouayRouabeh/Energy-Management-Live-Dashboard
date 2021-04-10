@@ -42,6 +42,22 @@ app.layout = html.Div([dcc.Graph(id='barplot',
                                                          xaxis={
                                                              'title': 'year 2019'}
                                                          )}
+                                 ),
+                       dcc.Graph(id='barplot3',
+                                 figure={'data': [
+                                     go.Bar(x=first["Month"],
+                                            y=first["consumption(659)"],
+
+                                            marker={
+
+                                         'color': '#40E0D0',
+
+                                     }
+                                     )],
+                                     'layout': go.Layout(title='consumption of counter 659 per month',
+                                                         xaxis={
+                                                             'title': '2019'}
+                                                         )}
                                  )
                        ])
 
