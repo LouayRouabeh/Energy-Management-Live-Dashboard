@@ -1,17 +1,11 @@
-import dash
-import dash_bootstrap_components as dbc
-import dash_html_components as html
 import dash_core_components as dcc
-import plotly.graph_objs as go
+import dash_html_components as html
 from dash.dependencies import Input, Output
-import pandas as pd
+from main import app
+import dash_bootstrap_components as dbc
+
 from FirstFloor import content1
-
-
-first = pd.read_excel("consumption.xlsx", "FirstFloor")
-
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-
+from upload import data_upload
 
 # styling the sidebar
 SIDEBAR_STYLE = {
@@ -43,6 +37,7 @@ sidebar = html.Div(
                 dbc.NavLink("Home", href="/", active="exact"),
                 dbc.NavLink("Floor 1", href="/floor-1", active="exact"),
                 dbc.NavLink("Floor 2", href="/floor-2", active="exact"),
+                dbc.NavLink("upload data", href="/upload", active="exact"),
             ],
             vertical=True,
             pills=True,
@@ -80,6 +75,10 @@ def render_page_content(pathname):
                     style={'textAlign': 'center'}),
 
         ]
+    elif pathname == "/upload":
+        return [
+            data_upload
+        ]
     # If the user tries to reach a different page, return a 404 message
     return dbc.Jumbotron(
         [
@@ -91,4 +90,4 @@ def render_page_content(pathname):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=3000)
+    app.run_server(debug=True)
