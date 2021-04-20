@@ -3,18 +3,23 @@ import base64
 import datetime
 import io
 
-
+import flask
 import dash_bootstrap_components as dbc
 import dash_html_components as html
 import dash_core_components as dcc
 import plotly.graph_objs as go
-from dash.dependencies import Input, Output
 import pandas as pd
+from dash_extensions import Download
+from dash_extensions.snippets import send_data_frame
+
+from GroundFloor import content0
+from dash.dependencies import Input, Output
 
 
 first = pd.read_excel("consumption.xlsx", "FirstFloor")
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__, external_stylesheets=[
+                dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True, prevent_initial_callbacks=True)
 
 
 # styling the sidebar
@@ -71,8 +76,8 @@ app.layout = html.Div([
 def render_page_content(pathname):
     if pathname == "/":
         return [
-            html.H1('Home graph',
-                    style={'textAlign': 'center'}),
+            html.Div([html.Button("Download", id="btn"), Download(id="download"),
+                      content0]),
         ]
     elif pathname == "/floor-1":
         return [
@@ -92,6 +97,13 @@ def render_page_content(pathname):
             html.P(f"The pathname {pathname} was not recognised..."),
         ]
     )
+
+##################### download Button ##################
+
+
+@app.callback(Output("download", "data"), [Input("btn", "n_clicks")])
+def func(n_clicks):
+    return send_data_frame(first.to_csv, "mydf.csv", index=False)
 
 ################################## First Floor ##################################
 
