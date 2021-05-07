@@ -1,13 +1,15 @@
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
-from main import app
 import dash_bootstrap_components as dbc
+import dash_html_components as html
+import dash_core_components as dcc
+
+from dash.dependencies import Input, Output
 
 from FirstFloor import content1
-from upload import data_upload
+from GroundFloor import content0
+from live_graph import layout_live
 
-# styling the sidebar
+from app import app
+
 SIDEBAR_STYLE = {
     "position": "fixed",
     "top": 0,
@@ -37,7 +39,6 @@ sidebar = html.Div(
                 dbc.NavLink("Home", href="/", active="exact"),
                 dbc.NavLink("Floor 1", href="/floor-1", active="exact"),
                 dbc.NavLink("Floor 2", href="/floor-2", active="exact"),
-                dbc.NavLink("upload data", href="/upload", active="exact"),
             ],
             vertical=True,
             pills=True,
@@ -62,8 +63,7 @@ app.layout = html.Div([
 def render_page_content(pathname):
     if pathname == "/":
         return [
-            html.H1('Home graph',
-                    style={'textAlign': 'center'}),
+            content0
         ]
     elif pathname == "/floor-1":
         return [
@@ -71,13 +71,8 @@ def render_page_content(pathname):
         ]
     elif pathname == "/floor-2":
         return [
-            html.H1('consumption and cost of electricity in second floor',
-                    style={'textAlign': 'center'}),
+            layout_live
 
-        ]
-    elif pathname == "/upload":
-        return [
-            data_upload
         ]
     # If the user tries to reach a different page, return a 404 message
     return dbc.Jumbotron(
@@ -90,4 +85,4 @@ def render_page_content(pathname):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True, port=3000)
