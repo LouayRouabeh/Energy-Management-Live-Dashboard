@@ -4,9 +4,10 @@ import dash_core_components as dcc
 
 from dash.dependencies import Input, Output
 
-from FirstFloor import content1
+
 from GroundFloor import content0
 from live_graph import layout_live
+from drop import drop
 
 from app import app
 
@@ -37,8 +38,8 @@ sidebar = html.Div(
         dbc.Nav(
             [
                 dbc.NavLink("Home", href="/", active="exact"),
-                dbc.NavLink("Floor 1", href="/floor-1", active="exact"),
-                dbc.NavLink("Floor 2", href="/floor-2", active="exact"),
+                dbc.NavLink("Drag & Drop", href="/drop", active="exact"),
+                dbc.NavLink("Live update test", href="/live-update", active="exact"),
             ],
             vertical=True,
             pills=True,
@@ -65,11 +66,11 @@ def render_page_content(pathname):
         return [
             content0
         ]
-    elif pathname == "/floor-1":
+    elif pathname == "/drop":
         return [
-            content1
+            drop
         ]
-    elif pathname == "/floor-2":
+    elif pathname == "/live-update":
         return [
             layout_live
 
