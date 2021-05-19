@@ -5,30 +5,26 @@ import dash_core_components as dcc
 import dash_html_components as html
 
 import pandas as pd
-import plotly.express as px
+
 import plotly.graph_objects as go
 from flask_sqlalchemy import SQLAlchemy
 
 from app import app
 
-app.server.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:5432@localhost/test"
-
 db = SQLAlchemy(app.server)
 
 
 class Consumption(db.Model):
-    __tablename__ = 'consumption'
+    __tablename__ = 'electricity'
 
-    Meter = db.Column(db.String(40), nullable=False, primary_key=True)
-    Electricity = db.Column(db.Integer, nullable=False)
-    Month = db.Column(db.String(40), nullable=False)
+    data = db.Column(db.String(40), nullable=False)
+    month = db.Column(db.String(40), nullable=False)
 
-    def __init__(self, meter, electricity, month):
-        self.Meter = meter
-        self.Electricity = electricity
+    def __init__(self, data, month):
+        self.data = data
         self.Month = month
 
-    crud = html.Div([
+    app.layout = html.Div([
         html.Div([
             dcc.Input(
                 id='adding-rows-name',
@@ -59,7 +55,7 @@ class Consumption(db.Model):
 @app.callback(Output('postgres_datatable', 'children'),
               [Input('interval_pg', 'n_intervals')])
 def populate_datatable(n_intervals):
-    df = pd.read_sql_table('consumption', con=db.engine)
+    df = pd.read_sql_table('electricity', con=db.engine)
     return [
         dash_table.DataTable(
             id='our-table',
@@ -130,9 +126,9 @@ app.callback(
 def display_graph(data):
     # df_fig = pd.DataFrame(data)
     # fig = px.bar(df_fig, x='Phone', y='Sales')
-    pg_filtered = db.session.query(Consumption.meter, Consumption.electricity)
-    month_c = [x.Month for x in pg_filtered]
-    ele_c = [x.Electricity for x in pg_filtered]
+    pg_filtered = db.session.query(Consumption.data, Consumption.month)
+    month_c = [x.month for x in pg_filtered]
+    ele_c = [x.data for x in pg_filtered]
     fig = go.Figure([go.Bar(x=month_c, y=ele_c)])
 
     return fig
@@ -156,7 +152,7 @@ def df_to_csv(n_clicks, n_intervals, dataset, s):
     if input_triggered == "save_to_postgres":
         s = 6
         pg = pd.DataFrame(dataset)
-        pg.to_sql("consumption", con=db.engine, if_exists='replace', index=False)
+        pg.to_sql("electricity", con=db.engine, if_exists='replace', index=False)
         return output, s
     elif input_triggered == 'interval' and s > 0:
         s = s - 1
@@ -166,3 +162,7 @@ def df_to_csv(n_clicks, n_intervals, dataset, s):
             return no_output, s
     elif s == 0:
         return no_output, s
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
