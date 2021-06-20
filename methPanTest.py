@@ -5,15 +5,7 @@ import pandas as pd
 
 from sqlalchemy import create_engine
 
-
-
-
-
-
 engine = create_engine('sqlite:///data.db', echo=False)
-
-
-
 
 
 # Create a simple database
@@ -73,8 +65,7 @@ def create_sample_database():
     df.to_sql('data.db', con=engine, if_exists='replace')
 
 
-
-# create_sample_database()
+create_sample_database()
 
 
 # Dash
@@ -89,11 +80,12 @@ def generate_table(dataframe, max_rows=10):
         ]) for i in range(min(len(dataframe), max_rows))]
     )
 
+
 app = dash.Dash()
 app.layout = html.Div([
     dcc.Input(
         id='sql-query',
-        value='SELECT * FROM "data.db"',
+        value='SELECT * FROM data.db',
         style={'width': '100%'},
         type='text'
     ),

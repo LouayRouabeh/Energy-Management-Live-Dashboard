@@ -38,6 +38,11 @@ sidebar = html.Div(
         dbc.Nav(
             [
                 dbc.NavLink("Home", href="/", active="exact"),
+                dbc.NavLink("Floor1", href="/floor1", active="exact"),
+                dbc.NavLink("Floor2", href="/floor2", active="exact"),
+                dbc.NavLink("Floor3", href="/floor3", active="exact"),
+                dbc.NavLink("Regression", href="/regression", active="exact"),
+                dbc.NavLink("Cusum", href="/cusum", active="exact"),
                 dbc.NavLink("Drag & Drop", href="/drop", active="exact"),
                 dbc.NavLink("Live update test", href="/live-update", active="exact"),
             ],
@@ -65,6 +70,26 @@ def render_page_content(pathname):
     if pathname == "/":
         return [
             content0
+        ]
+    elif pathname == "/floor1":
+        return [
+            html.H1("test")
+        ]
+    elif pathname == "/floor2":
+        return [
+            html.H1("test")
+        ]
+    elif pathname == "/floor3":
+        return [
+            html.H1("test")
+        ]
+    elif pathname == "/regression":
+        return [
+            html.H1("regression test")
+        ]
+    elif pathname == "/cusum":
+        return [
+            html.H1("cusum test")
         ]
     elif pathname == "/drop":
         return [
