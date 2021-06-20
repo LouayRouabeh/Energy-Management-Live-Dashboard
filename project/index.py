@@ -4,7 +4,7 @@ import dash_core_components as dcc
 
 from dash.dependencies import Input, Output
 
-
+from regression import regression
 from GroundFloor import content0
 from live_graph import layout_live
 from drop import drop
@@ -85,7 +85,7 @@ def render_page_content(pathname):
         ]
     elif pathname == "/regression":
         return [
-            html.H1("regression test")
+            regression
         ]
     elif pathname == "/cusum":
         return [
