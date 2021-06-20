@@ -1,8 +1,6 @@
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objs as go
-import dash
-import matplotlib.pyplot as plt
+
 import dash_html_components as html
 import dash_core_components as dcc
 from app import app
@@ -10,11 +8,36 @@ from app import app
 from dash.dependencies import Input, Output
 
 df = pd.read_excel('EleConsumption.xlsx', sheet_name='RegGround')
+df2 = pd.read_excel('EleConsumption.xlsx', sheet_name='RegFirst')
+df3 = pd.read_excel('EleConsumption.xlsx', sheet_name='RegSecond')
+df4 = pd.read_excel('EleConsumption.xlsx', sheet_name='RegThird')
 
 tab1 = html.Div([dcc.Graph(
-    figure=px.scatter(df, x='HDD 18(666)', y='consumption(666)', trendline='ols')
+    figure=px.scatter(df, x='CDD 18(666)', y='consumption(666)', trendline='ols')
 ), dcc.Graph(
-    figure=px.scatter(df, x='HDD 18(667)', y='consumption(667)', trendline='ols')
+    figure=px.scatter(df, x='CDD 18(667)', y='consumption(667)', trendline='ols')
+)])
+
+tab2 = html.Div([dcc.Graph(
+    figure=px.scatter(df2, x='CDD25(670)', y='consumption(670)', trendline='ols')
+), dcc.Graph(
+    figure=px.scatter(df2, x='CDD25(669)', y='consumption(669)', trendline='ols')
+), dcc.Graph(
+    figure=px.scatter(df2, x='CDD25(659)', y='consumption(659)', trendline='ols')
+), dcc.Graph(
+    figure=px.scatter(df2, x='CDD25(658)', y='consumption(658)', trendline='ols')
+)])
+
+tab3 = html.Div([dcc.Graph(
+    figure=px.scatter(df3, x='CDD25(672)', y='consumption(672)', trendline='ols')
+), dcc.Graph(
+    figure=px.scatter(df3, x='CDD25(671)', y='consumption(671)', trendline='ols')
+)])
+
+tab4 = html.Div([dcc.Graph(
+    figure=px.scatter(df4, x='CDD25(673)', y='consumption(673)', trendline='ols')
+), dcc.Graph(
+    figure=px.scatter(df4, x='CDD25(674)', y='consumption(674)', trendline='ols')
 )])
 
 regression = html.Div([
@@ -39,13 +62,13 @@ def render_content(tab):
         ])
     elif tab == 'tab-2':
         return html.Div([
-            html.H3('first floor')
+            tab2
         ])
     elif tab == 'tab-3':
         return html.Div([
-            html.H3('second floor')
+            tab3
         ])
     elif tab == 'tab-4':
         return html.Div([
-            html.H3('third floor')
+            tab4
         ])

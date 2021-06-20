@@ -4,11 +4,11 @@ import dash_core_components as dcc
 
 from dash.dependencies import Input, Output
 
+
 from regression import regression
 from GroundFloor import content0
-from live_graph import layout_live
-from drop import drop
-from dragDropSql import upload
+
+from floor1 import firstFloor
 from app import app
 
 SIDEBAR_STYLE = {
@@ -42,9 +42,6 @@ sidebar = html.Div(
                 dbc.NavLink("Floor2", href="/floor2", active="exact"),
                 dbc.NavLink("Floor3", href="/floor3", active="exact"),
                 dbc.NavLink("Regression", href="/regression", active="exact"),
-                dbc.NavLink("Cusum", href="/cusum", active="exact"),
-                dbc.NavLink("Drag & Drop", href="/drop", active="exact"),
-                dbc.NavLink("Live update test", href="/live-update", active="exact"),
             ],
             vertical=True,
             pills=True,
@@ -73,7 +70,7 @@ def render_page_content(pathname):
         ]
     elif pathname == "/floor1":
         return [
-            html.H1("test")
+            firstFloor
         ]
     elif pathname == "/floor2":
         return [
@@ -87,19 +84,7 @@ def render_page_content(pathname):
         return [
             regression
         ]
-    elif pathname == "/cusum":
-        return [
-            html.H1("cusum test")
-        ]
-    elif pathname == "/drop":
-        return [
-            drop
-        ]
-    elif pathname == "/live-update":
-        return [
-            layout_live
 
-        ]
     # If the user tries to reach a different page, return a 404 message
     return dbc.Jumbotron(
         [
