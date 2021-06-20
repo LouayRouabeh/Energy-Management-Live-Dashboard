@@ -8,7 +8,7 @@ from dash.dependencies import Input, Output
 from GroundFloor import content0
 from live_graph import layout_live
 from drop import drop
-
+from dragDropSql import upload
 from app import app
 
 SIDEBAR_STYLE = {
