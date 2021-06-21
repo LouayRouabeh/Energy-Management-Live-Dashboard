@@ -3,7 +3,6 @@ import datetime
 import io
 import plotly.graph_objs as go
 
-
 import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
@@ -18,10 +17,7 @@ from sqlalchemy import create_engine
 
 colors = {"graphBackground": "#F5F5F5", "background": "#ffffff", "text": "#000000"}
 
-
-
 engine = create_engine('sqlite:///data.db', echo=False)
-
 
 
 # Dash
@@ -36,25 +32,26 @@ def generate_table(dataframe, max_rows=10):
         ]) for i in range(min(len(dataframe), max_rows))]
     )
 
+
 app = dash.Dash()
 app.layout = html.Div([
     dcc.Upload(
-            id="upload-data",
-            children=html.Div(["Drag and Drop or ", html.A("Select Files")]),
-            style={
-                "width": "100%",
-                "height": "60px",
-                "lineHeight": "60px",
-                "borderWidth": "1px",
-                "borderStyle": "dashed",
-                "borderRadius": "5px",
-                "textAlign": "center",
-                "margin": "10px",
-            },
-            # Allow multiple files to be uploaded
-            multiple=True,
-        ),
-    html.P(id='saveSql', style={'display':'none'}),
+        id="upload-data",
+        children=html.Div(["Drag and Drop or ", html.A("Select Files")]),
+        style={
+            "width": "100%",
+            "height": "60px",
+            "lineHeight": "60px",
+            "borderWidth": "1px",
+            "borderStyle": "dashed",
+            "borderRadius": "5px",
+            "textAlign": "center",
+            "margin": "10px",
+        },
+        # Allow multiple files to be uploaded
+        multiple=True,
+    ),
+    html.P(id='saveSql', style={'display': 'none'}),
     dcc.Input(
         id='sql-query',
         value='SELECT * FROM "floor1.db"',
@@ -95,8 +92,8 @@ app.layout = html.Div([
 
 
 @app.callback(Output('saveSql', 'children'), [
-Input('upload-data', 'contents'),
-Input('upload-data', 'filename')
+    Input('upload-data', 'contents'),
+    Input('upload-data', 'filename')
 ])
 def update_graph(contents, filename):
     if contents:
@@ -124,12 +121,11 @@ def parse_data(contents, filename):
 
     return df
 
+
 @app.callback(
     Output("output-data-upload", "children"),
     [Input("upload-data", "contents"), Input("upload-data", "filename")],
 )
-
-
 def update_table(contents, filename):
     table = html.Div()
 
@@ -155,7 +151,6 @@ def update_table(contents, filename):
         )
 
     return table
-
 
 
 @app.callback(

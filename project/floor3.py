@@ -21,7 +21,6 @@ engine = create_engine('sqlite:///data.db', echo=False)
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-
 # Dash
 def generate_table(dataframe, max_rows=10):
     return html.Table(
@@ -35,7 +34,7 @@ def generate_table(dataframe, max_rows=10):
     )
 
 
-firstFloor = html.Div([
+thirdFloor = html.Div([
     dcc.Upload(
         id="upload-data",
         children=html.Div(["Drag and Drop or ", html.A("Select Files")]),
@@ -53,12 +52,12 @@ firstFloor = html.Div([
         multiple=True,
     ),
     dash_table.DataTable(
-        id='our-table'
+    id='our-table'
     ),
     html.P(id='saveSql', style={'display': 'none'}),
     dcc.Input(
         id='sql-query',
-        value='SELECT * FROM "floor1.db"',
+        value='SELECT * FROM "floor3.db"',
         style={'width': '100%', 'display': 'none'},
         type='text'
     ),
@@ -86,7 +85,7 @@ firstFloor = html.Div([
                     )
                 ], className="six columns")
             ], className="row"),
-            html.Div(dcc.Graph(id='graph', style={ 'width' : 'auto', 'padding' : 30, 'overflow' : 'hidden'}), className="ten columns")
+            html.Div(dcc.Graph(id='graph'), className="ten columns")
         ], className="eight columns")
     ], className="row"),
 
@@ -106,7 +105,7 @@ firstFloor = html.Div([
     ], style={'height': 50}),
     dcc.Interval(id='interval_pg', interval=86400000 * 7, n_intervals=0),
     # activated once/week or when page refreshed
-    html.Div(id='postgres_datatable', style={'width': 'auto', 'padding': 30, 'overflow': 'hidden'}),
+    html.Div(id='postgres_datatable'),
     html.Button('Add Row', id='editing-rows-button', n_clicks=0),
     html.Button('Save to PostgreSQL', id='save_to_postgres', n_clicks=0),
     # Create notification when saving to excel
@@ -117,7 +116,7 @@ firstFloor = html.Div([
 ])
 
 
-@app.callback(Output('saveSql', 'children'), [
+@app.callback(Output('saveSql3', 'children'), [
     Input('upload-data', 'contents'),
     Input('upload-data', 'filename')
 ])
@@ -127,7 +126,7 @@ def update_graph(contents, filename):
         filename = filename[0]
         df = parse_data(contents, filename)
         df = df.set_index(df.columns[0])
-        df.to_sql('floor1.db', con=engine, if_exists='replace')
+        df.to_sql('floor3.db', con=engine, if_exists='replace')
 
 
 def parse_data(contents, filename):
@@ -176,7 +175,7 @@ def update_table(contents, filename):
 
 
 @app.callback(
-    dash.dependencies.Output('table-store', 'children'),
+    dash.dependencies.Output('table-store3', 'children'),
     [dash.dependencies.Input('run-query', 'n_clicks')],
     state=[dash.dependencies.State('sql-query', 'value')])
 def sql(number_of_times_button_has_been_clicked, sql_query):
@@ -188,7 +187,7 @@ def sql(number_of_times_button_has_been_clicked, sql_query):
 
 
 @app.callback(
-    dash.dependencies.Output('table-container', 'children'),
+    dash.dependencies.Output('table-container3', 'children'),
     [dash.dependencies.Input('table-store', 'children')])
 def dff_to_table(dff_json):
     dff = pd.read_json(dff_json)
@@ -196,7 +195,7 @@ def dff_to_table(dff_json):
 
 
 @app.callback(
-    dash.dependencies.Output('graph', 'figure'),
+    dash.dependencies.Output('graph3', 'figure'),
     [dash.dependencies.Input('table-store', 'children'),
      dash.dependencies.Input('dropdown-x', 'value'),
      dash.dependencies.Input('dropdown-y', 'value')])
@@ -220,7 +219,7 @@ def dff_to_table(dff_json, dropdown_x, dropdown_y):
 
 
 @app.callback(
-    dash.dependencies.Output('dropdown-x', 'options'),
+    dash.dependencies.Output('dropdown-x3', 'options'),
     [dash.dependencies.Input('table-store', 'children')])
 def create_options_x(dff_json):
     dff = pd.read_json(dff_json)
@@ -228,7 +227,7 @@ def create_options_x(dff_json):
 
 
 @app.callback(
-    dash.dependencies.Output('dropdown-y', 'options'),
+    dash.dependencies.Output('dropdown-y3', 'options'),
     [dash.dependencies.Input('table-store', 'children')])
 def create_options_y(dff_json):
     dff = pd.read_json(dff_json)
@@ -236,10 +235,10 @@ def create_options_y(dff_json):
 
 
 ############################################################
-@app.callback(Output('postgres_datatable', 'children'),
+@app.callback(Output('postgres_datatable3', 'children'),
               [Input('interval_pg', 'n_intervals')])
 def populate_datatable(n_intervals):
-    df = pd.read_sql_table('floor1.db', con=engine)
+    df = pd.read_sql_table('floor3.db', con=engine)
     return [
         dash_table.DataTable(
             id='our-table',
@@ -274,7 +273,7 @@ def populate_datatable(n_intervals):
 
 
 @app.callback(
-    Output('our-table', 'columns'),
+    Output('our-table3', 'columns'),
     [Input('adding-columns-button', 'n_clicks')],
     [State('adding-rows-name', 'value'),
      State('our-table', 'columns')],
@@ -289,7 +288,7 @@ def add_columns(n_clicks, value, existing_columns):
 
 
 @app.callback(
-    Output('our-table', 'data'),
+    Output('our-table3', 'data'),
     [Input('editing-rows-button', 'n_clicks')],
     [State('our-table', 'data'),
      State('our-table', 'columns')],
@@ -301,8 +300,8 @@ def add_row(n_clicks, rows, columns):
 
 
 @app.callback(
-    [Output('placeholder', 'children'),
-     Output("store", "data")],
+    [Output('placeholder3', 'children'),
+     Output("store3", "data")],
     [Input('save_to_postgres', 'n_clicks'),
      Input("interval", "n_intervals")],
     [State('our-table', 'data'),
@@ -316,7 +315,7 @@ def df_to_csv(n_clicks, n_intervals, dataset, s):
     if input_triggered == "save_to_postgres":
         s = 6
         pg = pd.DataFrame(dataset)
-        pg.to_sql('floor1.db', con=engine, if_exists='replace', index=False)
+        pg.to_sql('floor3.db', con=engine, if_exists='replace', index=False)
         return output, s
     elif input_triggered == 'interval' and s > 0:
         s = s - 1

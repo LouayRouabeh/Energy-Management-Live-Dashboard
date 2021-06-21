@@ -36,6 +36,8 @@ content0 = html.Div([html.Button("Download", id="btn"), Download(id="download"),
 )])
 
 
+
+
 @app.callback(Output("download", "data"), [Input("btn", "n_clicks")])
 def func(n_clicks):
     return send_data_frame(ground.to_csv, "groundFloor.csv", index=False)

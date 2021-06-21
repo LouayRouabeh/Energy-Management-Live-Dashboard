@@ -4,10 +4,11 @@ import dash_core_components as dcc
 
 from dash.dependencies import Input, Output
 
-
+from cusum import cusumGraph
 from regression import regression
 from GroundFloor import content0
-
+from floor3 import thirdFloor
+from floor2 import secondFloor
 from floor1 import firstFloor
 from app import app
 
@@ -23,9 +24,9 @@ SIDEBAR_STYLE = {
 
 # padding for the page content
 CONTENT_STYLE = {
-    "margin-left": "18rem",
-    "margin-right": "2rem",
-    "padding": "2rem 1rem",
+         "margin-left": "18rem",
+         "margin-right": "2rem",
+         "padding": "2rem 1rem",
 }
 
 sidebar = html.Div(
@@ -41,7 +42,8 @@ sidebar = html.Div(
                 dbc.NavLink("Floor1", href="/floor1", active="exact"),
                 dbc.NavLink("Floor2", href="/floor2", active="exact"),
                 dbc.NavLink("Floor3", href="/floor3", active="exact"),
-                dbc.NavLink("Regression", href="/regression", active="exact"),
+                dbc.NavLink("Regression analysis", href="/regression", active="exact"),
+                dbc.NavLink("Cusum analysis", href="/cusum", active="exact")
             ],
             vertical=True,
             pills=True,
@@ -74,15 +76,19 @@ def render_page_content(pathname):
         ]
     elif pathname == "/floor2":
         return [
-            html.H1("test")
+            secondFloor
         ]
     elif pathname == "/floor3":
         return [
-            html.H1("test")
+            thirdFloor
         ]
     elif pathname == "/regression":
         return [
             regression
+        ]
+    elif pathname == "/cusum":
+        return [
+            cusumGraph
         ]
 
     # If the user tries to reach a different page, return a 404 message

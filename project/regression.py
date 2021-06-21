@@ -13,31 +13,34 @@ df3 = pd.read_excel('EleConsumption.xlsx', sheet_name='RegSecond')
 df4 = pd.read_excel('EleConsumption.xlsx', sheet_name='RegThird')
 
 tab1 = html.Div([dcc.Graph(
-    figure=px.scatter(df, x='CDD 18(666)', y='consumption(666)', trendline='ols')
+    figure=px.scatter(df, x='CDD 18(666)', y='consumption(666)', trendline='ols',title='central AC, Amphitheatre, '
+                                                                                       'B-003 -> B-006 ')
 ), dcc.Graph(
-    figure=px.scatter(df, x='CDD 18(667)', y='consumption(667)', trendline='ols')
+    figure=px.scatter(df, x='CDD 18(667)', y='consumption(667)', trendline='ols',title='student affairs-mezzanine, '
+                                                                                       'frontDesk ')
 )])
 
 tab2 = html.Div([dcc.Graph(
-    figure=px.scatter(df2, x='CDD25(670)', y='consumption(670)', trendline='ols')
+    figure=px.scatter(df2, x='CDD25(670)', y='consumption(670)', trendline='ols',title='B-105 -> B-108')
 ), dcc.Graph(
-    figure=px.scatter(df2, x='CDD25(669)', y='consumption(669)', trendline='ols')
+    figure=px.scatter(df2, x='CDD25(669)', y='consumption(669)', trendline='ols',title='IT office, server room - '
+                                                                                       'student life office, B-100 ')
 ), dcc.Graph(
-    figure=px.scatter(df2, x='CDD25(659)', y='consumption(659)', trendline='ols')
+    figure=px.scatter(df2, x='CDD25(659)', y='consumption(659)', trendline='ols',title='library')
 ), dcc.Graph(
-    figure=px.scatter(df2, x='CDD25(658)', y='consumption(658)', trendline='ols')
+    figure=px.scatter(df2, x='CDD25(658)', y='consumption(658)', trendline='ols', title='Boxes & B-111 -> B-115')
 )])
 
 tab3 = html.Div([dcc.Graph(
-    figure=px.scatter(df3, x='CDD25(672)', y='consumption(672)', trendline='ols')
+    figure=px.scatter(df3, x='CDD25(672)', y='consumption(672)', trendline='ols', title='B-204 -> B-210')
 ), dcc.Graph(
-    figure=px.scatter(df3, x='CDD25(671)', y='consumption(671)', trendline='ols')
+    figure=px.scatter(df3, x='CDD25(671)', y='consumption(671)', trendline='ols', title='B-200 -> B-203 & kitchen')
 )])
 
 tab4 = html.Div([dcc.Graph(
-    figure=px.scatter(df4, x='CDD25(673)', y='consumption(673)', trendline='ols')
+    figure=px.scatter(df4, x='CDD25(673)', y='consumption(673)', trendline='ols', title='B-304 -> B-309')
 ), dcc.Graph(
-    figure=px.scatter(df4, x='CDD25(674)', y='consumption(674)', trendline='ols')
+    figure=px.scatter(df4, x='CDD25(674)', y='consumption(674)', trendline='ols', title='B-300 -> B-303')
 )])
 
 regression = html.Div([
